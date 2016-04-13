@@ -133,13 +133,6 @@ function SessionHandler(db) {
         */
         var PASS_RE = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/; //regex to ensure valid password
 
-        /*************** SECURITY ISSUE ****************
-         ** Stronger password regexes should be used; **
-         ** users should not be expected to create    **
-         ** strong passwords.                         **
-         ** Most common password in 2015? "123456"    **
-         ***********************************************/
-
         errors.userNameError = "";
         errors.firstNameError = "";
         errors.lastNameError = "";

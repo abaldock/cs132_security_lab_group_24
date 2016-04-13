@@ -105,7 +105,15 @@ function SessionHandler(db) {
         var FNAME_RE = /^.{1,100}$/;
         var LNAME_RE = /^.{1,100}$/;
         var EMAIL_RE = /^[\S]+@[\S]+\.[\S]+$/;
-        var PASS_RE = /^.{1,20}$/; //regex to ensure valid password
+        /*
+            Password must meet the following minimum criteria for a stronger password:
+                -8 characters length
+                -2 letters in Upper Case
+                -1 Special Character (!@#$&*)
+                -2 numerals (0-9)
+                -3 letters in Lower Case
+        */
+        var PASS_RE = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/; //regex to ensure valid password
 
         /*************** SECURITY ISSUE ****************
          ** Stronger password regexes should be used; **

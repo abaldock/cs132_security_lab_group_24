@@ -30,6 +30,19 @@ var config = require("./config/config"); // Application config properties
  **       do so here, using middleware.       **
  **       Check out the csrf module!          **
  ***********************************************/
+// Load keys for establishing secure HTTPS connection
+var fs = require("fs");
+var https = require("https");
+var path = require("path");
+var httpsOptions = {
+    key: fs.readFileSync(path.resolve(__dirname, "./app/cert/key.pem")),
+    cert: fs.readFileSync(path.resolve(__dirname, "./app/cert/cert.pem"))
+};
+
+
+
+
+
 
 MongoClient.connect(config.db, function(err, db) {
     if (err) {
@@ -38,7 +51,6 @@ MongoClient.connect(config.db, function(err, db) {
 
         process.exit(1);
     }
-    app.use(cookieParser());
 
     console.log("Connected to the database: " + config.db);
     // Adding/ remove HTTP Headers for security
@@ -56,10 +68,7 @@ MongoClient.connect(config.db, function(err, db) {
         secret: config.cookieSecret,
         saveUninitialized: true,
         resave: true
-        secret: "s3Cur3",
-        cookie: {
-            httpOnly: true,
-        }
+
      
     }));
 
@@ -79,8 +88,13 @@ MongoClient.connect(config.db, function(err, db) {
     });
 
     // Insecure HTTP connection
-    http.createServer(app).listen(config.port,  function() {
-        console.log("Express http server listening on port " + config.port);
+    // http.createServer(app).listen(config.port,  function() {
+    //     console.log("Express http server listening on port " + config.port);
+    // });
+    //secure one
+    // Start secure HTTPS server
+    https.createServer(httpsOptions, app).listen(config.port, function() {
+        console.log("Express https server listening on port " + config.port);
     });
 
 });

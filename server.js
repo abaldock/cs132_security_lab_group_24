@@ -38,7 +38,6 @@ MongoClient.connect(config.db, function(err, db) {
 
         process.exit(1);
     }
-    app.use(express.cookieParser());
     console.log("Connected to the database: " + config.db);
     // Adding/ remove HTTP Headers for security
     app.use(favicon(__dirname + "/app/assets/favicon.ico"));
@@ -55,11 +54,7 @@ MongoClient.connect(config.db, function(err, db) {
         secret: config.cookieSecret,
         saveUninitialized: true,
         resave: true
-         secret: "s3Cur3",
-        cookie: {
-        httpOnly: true,
-        secure: true
-        }
+        
      
     }));
 

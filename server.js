@@ -39,7 +39,7 @@ MongoClient.connect(config.db, function(err, db) {
         process.exit(1);
     }
     console.log("Connected to the database: " + config.db);
-
+    app.use(express.cookieParser());
     // Adding/ remove HTTP Headers for security
     app.use(favicon(__dirname + "/app/assets/favicon.ico"));
 
@@ -51,10 +51,14 @@ MongoClient.connect(config.db, function(err, db) {
     }));
 
     // Enable session management using express middleware
-    app.use(session({
+    app.use(express.session({
         secret: config.cookieSecret,
         saveUninitialized: true,
         resave: true
+        cookie: {
+        httpOnly: true,
+        secure: true
+        }
     }));
 
     // Register templating engine

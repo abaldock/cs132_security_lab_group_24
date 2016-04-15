@@ -8,6 +8,10 @@ var ErrorHandler = require("./error").errorHandler;
 // This page handles ROUTES. It checks whether a user is logged in, whether
 // they're an admin, and sends a user to whichever route they requested.
 
+//Middleware to check if user has admin rights
+var isAdmin = sessionHandler.isAdminUserMiddleware;
+
+
 var exports = function(app, db) {
 
     "use strict";

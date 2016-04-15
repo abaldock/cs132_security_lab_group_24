@@ -21,14 +21,17 @@ function UserDAO(db) {
          ** database using plaintext?                 **
          ** Note: the bcrypt module helps fix this    **
          ***********************************************/
-
+        // Generate password hash
+        var salt = bcrypt.genSaltSync();
+        var passwordHash = bcrypt.hashSync(password, salt);
+        
         // Create user document
         var user = {
             userName: userName,
             firstName: firstName,
             lastName: lastName,
             benefitStartDate: this.getRandomFutureDate(),
-            password: password //received from request param
+            password: passwordHash 
         };
 
         // Add email if set
@@ -71,7 +74,7 @@ function UserDAO(db) {
             if (err) return callback(err, null);
 
             if (user) {
-                if (comparePassword(password, user.password)) {
+                if (bcrypt.compareSync(password, user.password)) {
                     callback(null, user);
                 } else {
                     var invalidPasswordError = new Error("Invalid password");

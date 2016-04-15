@@ -17,6 +17,36 @@ function ProfileDAO(db) {
      ** Sensitive data should be handled with     **
      ** encyrption. Check out the "crypto" module **
      ***********************************************/
+     // Include crtpto module
+    var crypto = require("crypto");
+    
+    //Set keys config object
+    var config = {
+        cryptoKey: "a_secure_key_for_crypto_here",
+        cryptoAlgo: "aes256" // or other secure encryption algo here
+    };
+    
+    // Helper methods to encryt / decrypt
+    var encrypt = function(toEncrypt) {
+        var cipher = crypto.createCipher(config.cryptoAlgo, config.cryptoKey);
+        return cipher.update(toEncrypt, "utf8", "hex") + cipher.final("hex");
+    };
+    
+    var decrypt = function(toDecrypt) {
+        var decipher = crypto.createDecipher(config.cryptoAlgo, config.cryptoKey);
+        return decipher.update(toDecrypt, "hex", "utf8") + decipher.final("utf8");
+    };
+    
+    // Encrypt values before saving in database
+    user.ssn = encrypt(ssn);
+    user.dob = encrypt(dob);
+    
+    // Decrypt values to show on view
+    user.ssn = decrypt(user.ssn);
+    user.dob = decrypt(user.dob);
+     
+     
+     
 
     this.updateUser = function(userId, firstName, lastName, ssn, dob, address, bankAcc, bankRouting, callback) {
 

@@ -22,6 +22,7 @@ function ContributionsHandler(db) {
          ** What is bad about using eval() to parse   **
          ** user input here?                          **
          ***********************************************/
+         //This makes application vulnerable to SSJS attack. It can fixed simply by using parseInt()instead.
         var preTax = parseInt(req.body.preTax);
         var afterTax = parseInt(req.body.afterTax);
         var roth = parseInt(req.body.roth);

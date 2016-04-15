@@ -42,25 +42,27 @@ function SessionHandler(db) {
 
         userDAO.validateLogin(userName, password, function(err, user) {
             var errorMessage = "Invalid username and/or password";
-            var invalidUserNameErrorMessage = "Invalid username";
-            var invalidPasswordErrorMessage = "Invalid password";
-
+            //var invalidUserNameErrorMessage = "Invalid username";
+            //var invalidPasswordErrorMessage = "Invalid password";
+            var invalidUserPasswordNameErrorMessage = "Invalid username and/or password";
             /*************** SECURITY ISSUE ****************
              ** Why are two different error messages      **
              ** bad?                                      **
              ***********************************************/
+             //This information can be valuable to an attacker with brute forcing attempts. 
+             //This can be easily fixed using a generic error message such as "Invalid username and/or password".
             if (err) {
                 if (err.noSuchUser) {
                     return res.render("login", {
                         userName: userName,
                         password: "",
-                        loginError: invalidUserNameErrorMessage
+                        loginError: invalidUserPasswordNameErrorMessage
                     });
                 } else if (err.invalidPassword) {
                     return res.render("login", {
                         userName: userName,
                         password: "",
-                        loginError: invalidPasswordErrorMessage
+                        loginError: invalidUserPasswordNameErrorMessage
                     });
                 } else {
                     return next(err);
